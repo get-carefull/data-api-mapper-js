@@ -6,7 +6,6 @@ describe('ParameterBuilderTest', () => {
         const parameterBuilder = new ParameterBuilder()
         const date = new Date()
         const parameters = parameterBuilder.fromQuery({long: 3, string: 'Test', date: date, jsonb: {id: 1, account: 'account'}, float: 1.31, null: null})
-        console.log(parameters)
         assert.strictEqual(JSON.stringify(parameters), JSON.stringify([
             {name: 'long', value: {'longValue': 3}},
             {name: 'string', value: {'stringValue': 'Test'}},

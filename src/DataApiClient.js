@@ -8,11 +8,10 @@ class DataApiClient {
         this.clusterArn = clusterArn
         this.databaseName = databaseName
         this.mapper = mapper
-        this.parameterBuilder = new ParameterBuilder()
     }
 
     query(sql, parameters, mapper, transaction){
-        const params = this.parameterBuilder.fromQuery(parameters)
+        const params = new ParameterBuilder().fromQuery(parameters)
         const config = this.createConfig(sql, params)
         //TODO Check how manage this, because if the rdsClient can change maybe the method that we need to invoke too.
         // Currently executeStatement is not the correct method ( I don't know the method ). Maybe exists a generic method.
