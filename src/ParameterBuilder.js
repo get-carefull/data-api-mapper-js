@@ -68,8 +68,8 @@ class ParameterBuilder {
             for(const [key, value] of Object.entries(parameters)){
                 this.add(key,value)
             }
-            return this.parameters
         }
+        return this.parameters
     }
 
     build() {
