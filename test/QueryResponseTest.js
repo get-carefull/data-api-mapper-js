@@ -1,5 +1,5 @@
 const assert = require("assert");
-const {QueryResponse} = require("../src/outputBuilder/QueryResponse");
+const {QueryResponse} = require("../src/outputDataApiBuilder/QueryResponse");
 
 describe('QueryResponseTest', function() {
     it('Obtain query response OK', async () => {
