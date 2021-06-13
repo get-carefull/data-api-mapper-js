@@ -4,7 +4,7 @@ class ParameterBuilder {
 
     constructor() {
         this.parameters = []
-        this.objectConstructor = ({}).constructor
+        this.jsonConstructor = ({}).constructor
     }
 
     buildMap(name, value, type, hint){
@@ -49,7 +49,7 @@ class ParameterBuilder {
                     this.parameters.push(this.buildMap(name, value, 'blobValue'))
                     return
                 }
-                if(this.objectConstructor === value?.constructor){
+                if(this.jsonConstructor === value?.constructor){
                     this.parameters.push(this.buildMap(name, JSON.stringify(value), 'stringValue', 'JSON'))
                     return
                 }

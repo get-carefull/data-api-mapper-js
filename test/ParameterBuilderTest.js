@@ -1,5 +1,5 @@
 const assert = require('assert')
-const {ParameterBuilder} = require("../src/ParameterBuilder")
+const {ParameterBuilder} = require("../src/inputBuilder/ParameterBuilder")
 
 describe('ParameterBuilderTest', () => {
     it('should create correct build', () => {
