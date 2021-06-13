@@ -1,4 +1,4 @@
-const {ParameterBuilderException} = require("./exceptions/ParameterBuilderException")
+const {ParameterBuilderException} = require("../exceptions/ParameterBuilderException")
 
 class ParameterBuilder {
 

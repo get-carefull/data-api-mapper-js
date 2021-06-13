@@ -1,33 +1,48 @@
-const {ParameterBuilder} = require("./ParameterBuilder")
+const {DataApiClientException} = require("./exceptions/DataApiClientException");
+const {Transaction} = require("./transaction/Transaction")
+const {ParameterBuilder} = require("./inputBuilder/ParameterBuilder")
+const { RDSDataClient } = require('@aws-sdk/client-rds-data')
 
 class DataApiClient {
 
-    constructor(rdsClient, secretArn, clusterArn, databaseName, mapper) {
-        this.rdsClient = rdsClient
+    constructor(secretArn, resourceArn, databaseName, mapper, region) {
         this.secretArn = secretArn
-        this.clusterArn = clusterArn
+        this.resourceArn = resourceArn
         this.databaseName = databaseName
+        this.rdsClient = new RDSDataClient({ region: region })
         this.mapper = mapper
     }
 
-    query(sql, parameters, mapper, transaction){
+    async query(sql, parameters, mapper, transaction){
         const params = new ParameterBuilder().fromQuery(parameters)
-        const config = this.createConfig(sql, params)
-        //TODO Check how manage this, because if the rdsClient can change maybe the method that we need to invoke too.
-        // Currently executeStatement is not the correct method ( I don't know the method ). Maybe exists a generic method.
-        const response = this.rdsClient.executeStatement()
+        try{
+            const config = this.createConfig(sql, params)
+            const response = await this.rdsClient.executeStatement(config)
+            const responseFormatJson = JSON.parse(response)
+            if(responseFormatJson.columnMetadata) {
 
+            } else {
+                return responseFormatJson.numberOfRecordsUpdated
+            }
+        }catch (e) {
+            console.error(e)
+            throw new DataApiClientException('An error occurred while invoking sql', e)
+        }
+
+    }
+
+    beginTransaction() {
+        return new Transaction(this.secretArn, this.resourceArn, this.databaseName, this.rdsClient, this.mapper)
     }
 
     createConfig(sql, parameters){
         return {
             secretArn: this.secretArn,
             database: this.databaseName,
-            resourceArn: this.clusterArn,
+            resourceArn: this.resourceArn,
             sql: sql,
             includeResultMetadata: true,
             parameters: parameters,
-
         }
     }
 
