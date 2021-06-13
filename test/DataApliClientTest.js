@@ -1,7 +1,7 @@
 const assert = require("assert");
 const {DataApiClient} = require("../src/DataApiClient");
 
-
+//TODO: Change for use reseau database and load the properties from .env.json
 describe('DataApiClientTest', () => {
     const database = 'carefull'
     const resourceArn = 'arn:aws:rds:us-east-1:658335388846:cluster:carefull-dev'
