@@ -15,7 +15,7 @@ class DataApiClient {
         this.mapper = mapper
     }
 
-    async query(sql, parameters, mapper){
+    async query(sql, parameters){
         const params = new ParameterBuilder().fromQuery(parameters)
         try{
             const executeCommand = new ExecuteStatementCommand({
