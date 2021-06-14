@@ -14,6 +14,6 @@
     "mocha": "^9.0.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --timeout 1200000"
   }
 }

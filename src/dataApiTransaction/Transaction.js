@@ -1,7 +1,7 @@
 const {QueryResponse} = require("../outputDataApiBuilder/QueryResponse");
 const {DataApiClientException} = require("../exceptions/DataApiClientException");
 const {ParameterBuilder} = require("../inputDataApiBuilder/ParameterBuilder")
-const { BeginTransactionCommand, RollbackTransactionCommand, CommitTransactionCommand } = require('@aws-sdk/client-rds-data')
+const { BeginTransactionCommand, RollbackTransactionCommand, CommitTransactionCommand, ExecuteStatementCommand } = require('@aws-sdk/client-rds-data')
 
 
 class Transaction {
@@ -12,12 +12,21 @@ class Transaction {
         this.database = database
         this.rdsClient = rdsClient
         this.mapper = mapper
-        this.transactionId = rdsClient.beginTransaction({secretArn: secretArn, resourceArn: resourceArn, database: database }).transactionId
+        this.transactionId = null
     }
 
     async query(sql, parameters, mappers){
+        if(!this.transactionId){
+            const beginTransactionCommand = new BeginTransactionCommand({
+                secretArn: this.secretArn,
+                database: this.database,
+                resourceArn: this.resourceArn
+            })
+           const response = await this.rdsClient.send(beginTransactionCommand)
+           this.transactionId = response.transactionId
+        }
         const params = new ParameterBuilder().fromQuery(parameters)
-        const beginTransactionCommand = new BeginTransactionCommand({
+        const executeStatementCommand = new ExecuteStatementCommand({
             secretArn: this.secretArn,
             database: this.databaseName,
             resourceArn: this.resourceArn,
@@ -27,17 +36,14 @@ class Transaction {
             parameters: params
         })
         try {
-            const response = await this.rdsClient.send(beginTransactionCommand)
-            const responseFormatJson = JSON.parse(response)
-            if(responseFormatJson.columnMetadata) {
-                const responseParse = new QueryResponse().parse(responseFormatJson)
-
+            const response = await this.rdsClient.send(executeStatementCommand)
+            if(response?.columnMetadata) {
+                return new QueryResponse().parse(response)
             } else {
-                return responseFormatJson.numberOfRecordsUpdated
+                return response?.numberOfRecordsUpdated
             }
         }catch (e) {
-            const { requestId, cfId, extendedRequestId } = e.$metadata
-            console.error({ requestId, cfId, extendedRequestId })
+            console.error(e)
             throw new DataApiClientException('An error occurred while invoking sql', e)
         }
 
@@ -51,6 +57,7 @@ class Transaction {
     async rollbackTransaction(){
         const rollbackTransaction = new RollbackTransactionCommand({resourceArn: this.resourceArn, secretArn: this.secretArn, transactionId: this.transactionId})
         const response = await this.rdsClient.send(rollbackTransaction)
+        return response
     }
 
 }

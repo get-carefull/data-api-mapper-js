@@ -15,11 +15,11 @@ class QueryResponse {
                 const colName = metadata[index].name
                 row.push({
                     name: colName,
-                    value: col.isNull ? null : Object.entries(col)[0][1],
                     tableName: metadata[index].tableName,
                     typeDbName: metadata[index].typeName,
                     nullable: metadata[index].nullable !== 0,
-                    typeDataApi: typeDataApi
+                    typeDataApi: Object.entries(col)[0][0],
+                    value: col.isNull ? null : Object.entries(col)[0][1]
                 })
 
                 // this can be returned on demand with a flag

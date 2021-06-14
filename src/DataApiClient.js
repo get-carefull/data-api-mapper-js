@@ -39,7 +39,7 @@ class DataApiClient {
 
     }
 
-    beginTransaction() {
+    async beginTransaction() {
         return new Transaction(this.secretArn, this.resourceArn, this.databaseName, this.rdsClient, this.mapper)
     }
 
