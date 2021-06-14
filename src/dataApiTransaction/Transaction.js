@@ -52,6 +52,7 @@ class Transaction {
     async commitTransaction(){
         const commitTransaction = new CommitTransactionCommand({resourceArn: this.resourceArn, secretArn: this.secretArn, transactionId: this.transactionId})
         const response = await this.rdsClient.send(commitTransaction)
+        return response
     }
 
     async rollbackTransaction(){
