@@ -43,6 +43,29 @@ class DataApiClient {
         return new Transaction(this.secretArn, this.resourceArn, this.databaseName, this.rdsClient, this.mapper)
     }
 
+    async query_paginated(sql, parameters, pageSize){
+        let offset = 0
+        const result = []
+        if(!pageSize){
+            pageSize = 100
+        }
+        const sqlPaginated = `${sql} limit ${pageSize} offset ${offset}`
+        let response = await this.query(sqlPaginated, parameters)
+        response.rows.forEach((element) => {
+            result.push(element)
+        })
+        while(response.rows.length >= pageSize ){
+            offset = offset + pageSize
+            const sqlPaginated = `${sql} limit ${pageSize} offset ${offset}`
+            const responseNew = await this.query(sqlPaginated, parameters)
+            responseNew.rows.forEach((element) => {
+                result.push(element)
+            })
+            response = responseNew
+        }
+        return result
+    }
+
 }
 
 module.exports ={DataApiClient}

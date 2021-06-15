@@ -79,6 +79,18 @@ describe('DataApiClientTest', () => {
             assert.strictEqual(JSON.stringify(responseThirdInsertExists.rows), JSON.stringify(resultRowsExpected))
         })
     })
+
+    describe('DataApiClientQueryPaginated', function () {
+
+        it('Query Paginated OK',   async () => {
+            //Insert new row
+            const thirdInsert = "INSERT INTO aurora_data_api_node_test (id, a_name, doc, num_numeric, num_float, num_integer, ts, tz_notimezone, a_date) VALUES (8, 'first row', '{\"string_vale\": \"string1\", \"int_value\": 1, \"float_value\": 1.11}', 1.12345, 1.11, 1, '1976-11-02 08:45:00 UTC', '2021-03-03 15:51:48.082288', '1976-11-02');"
+            await dataApiClient.query(thirdInsert)
+            //Get the row insert with te transaction and should bring me data
+            const response = await dataApiClient.query_paginated('SELECT * FROM aurora_data_api_node_test', [],1)
+            assert.strictEqual(response.length, 3)
+        })
+    })
 })
 
 
