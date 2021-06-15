@@ -43,6 +43,7 @@ class DataApiClient {
         return new Transaction(this.secretArn, this.resourceArn, this.databaseName, this.rdsClient, this.mapper)
     }
 
+    //TODO Check the order about the query
     async query_paginated(sql, parameters, pageSize){
         let offset = 0
         const result = []
