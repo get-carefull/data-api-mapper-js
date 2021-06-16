@@ -1,13 +1,10 @@
-const assert = require("assert");
-const {DataApiClient} = require("../src/DataApiClient");
+const assert = require("assert")
+const {DataApiClient} = require("../src/DataApiClient")
+const dotenv = require('dotenv')
+dotenv.config()
 
-//TODO: Change for use reseau database and load the properties from .env.json
 describe('DataApiClientTest', () => {
-    const database = 'carefull'
-    const resourceArn = 'arn:aws:rds:us-east-1:658335388846:cluster:carefull-dev'
-    const secretArn = 'arn:aws:secretsmanager:us-east-1:658335388846:secret:/dev/database/carefull-dev/credentials/root-Ljulx2'
-    const region = 'us-east-1'
-    const dataApiClient = new DataApiClient(secretArn, resourceArn, database, null, region)
+    const dataApiClient = new DataApiClient(process.env.DB_SECRET_ARN, process.env.DB_RESOURCE_ARN, process.env.DB_DATABASE, null, process.env.REGION)
 
     before(async function () {
         const dropTable = 'DROP TABLE IF EXISTS aurora_data_api_node_test'

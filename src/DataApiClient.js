@@ -1,5 +1,5 @@
-const {QueryResponse} = require("./outputDataApiBuilder/QueryResponse");
-const {DataApiClientException} = require("./exceptions/DataApiClientException");
+const {QueryResponse} = require("./outputDataApiBuilder/QueryResponse")
+const {DataApiClientException} = require("./exceptions/DataApiClientException")
 const {Transaction} = require("./dataApiTransaction/Transaction")
 const {ParameterBuilder} = require("./inputDataApiBuilder/ParameterBuilder")
 const { RDSDataClient, ExecuteStatementCommand } = require('@aws-sdk/client-rds-data')
