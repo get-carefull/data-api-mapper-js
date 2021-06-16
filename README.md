@@ -29,7 +29,7 @@ INSERT INTO aurora_data_api_node_test (a_name, doc, num_numeric, num_float, num_
 
 this query 
 ```javascript 
-dataApiClient.query("select * from aurora_data_api_test where id (1,2)"
+dataApiClient.query("select * from aurora_data_api_node_test")
 ```
 
 will return a Query response with this elements:
