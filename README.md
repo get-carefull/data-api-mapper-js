@@ -80,8 +80,8 @@ To query with parameters, you can use named parameters in your SQL, and then pro
 ```javascript
 
 result = dataApiClient.query(
-    'SELECT * FROM myTable WHERE id = :id AND created > :createDate',
-    { 'id': 2, 'createDate': datetime.date(2021,6,1) }
+    'SELECT * FROM myTable WHERE id = :id',
+    { 'id': 2 }
 )
 ```
 
