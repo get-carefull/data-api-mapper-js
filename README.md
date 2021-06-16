@@ -121,6 +121,6 @@ assert.strictEqual(JSON.stringify(responseThirdInsertDoesntExists.rows), JSON.st
 # Expressions of Gratitude 🎁
 
 * tell others about the project 📢
-* Invite a beer 🍺   or a coffee ☕  a someone of the team. 
+* Invite someone of the team for a 🍺  or a coffee ☕ .
 * etc.
 
