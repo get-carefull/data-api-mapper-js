@@ -7,12 +7,12 @@ const { RDSDataClient, ExecuteStatementCommand } = require('@aws-sdk/client-rds-
 
 class DataApiClient {
 
-    constructor(secretArn, resourceArn, databaseName, mapper, region) {
+    constructor(secretArn, resourceArn, databaseName, region) {
         this.secretArn = secretArn
         this.resourceArn = resourceArn
         this.databaseName = databaseName
         this.rdsClient = new RDSDataClient({ region: region })
-        this.mapper = mapper
+        this.mapper = null
     }
 
     async query(sql, parameters){
