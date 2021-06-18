@@ -5,7 +5,7 @@ The Data API Mapper is a lightweight wrapper for Amazon Aurora Serverless Data A
 ## How to use this module
 
 ```javascript
-dataApiClient = DataAPIClient(secret_arn, resourceArn, databaseName, region)
+dataApiClient = new DataApiClient(secret_arn, databaseArn, databaseName, region)
 ```
 
 ## Running a query ⚙️
@@ -28,7 +28,7 @@ INSERT INTO aurora_data_api_node_test (a_name, doc, num_numeric, num_float, num_
 
 this query 
 ```javascript 
-dataApiClient.query("select * from aurora_data_api_node_test")
+await dataApiClient.query("select * from aurora_data_api_node_test")
 ```
 
 will return a QueryResponse with this elements:
@@ -79,7 +79,7 @@ To query with parameters, you can use named parameters in your SQL, and then pro
 
 ```javascript
 
-result = dataApiClient.query(
+result = await dataApiClient.query(
     'SELECT * FROM myTable WHERE id = :id',
     { 'id': 2 }
 )
@@ -90,7 +90,7 @@ result = dataApiClient.query(
 You can initialize a transaction with this method:
 
 ```javascript 
-const transaction = dataApiClient.beginTransaction()
+const transaction = await dataApiClient.beginTransaction()
 ```
 and then you can run queries (INSERT,UPDATE,DELETE,SELECT) and finally you can do commit/rollback.
 
