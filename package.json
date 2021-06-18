@@ -1,5 +1,5 @@
 {
-  "name": "data-api-mapper",
+  "name": "@lifs/data-api-mapper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
