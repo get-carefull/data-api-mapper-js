@@ -86,7 +86,7 @@ describe('DataApiClientTest', () => {
             await dataApiClient.query(thirdInsert)
             //Get the row insert with te transaction and should bring me data
             const response = await dataApiClient.query_paginated('SELECT * FROM aurora_data_api_node_test', [],1)
-            assert.strictEqual(response.length, 3)
+            assert.strictEqual(response.length, 4)
         })
     })
 })

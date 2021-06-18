@@ -22,19 +22,7 @@ describe('QueryResponseTest', function() {
 
     it('Obtain query response items OK', async () => {
         const response = new QueryResponse().parse(exampleResponseDataApi)
-        const resultExpected = [[{"name": "id","tableName": "aurora_data_api_node_test","typeDbName": "serial","nullable": false,"typeDataApi": "longValue","value": 1},
-            {"name": "a_name","tableName": "aurora_data_api_node_test","typeDbName": "text","nullable": true,"typeDataApi": "stringValue","value": "first row"},
-            {"name": "doc","tableName": "aurora_data_api_node_test","typeDbName": "jsonb","nullable": true,"typeDataApi": "stringValue","value": "{\"int_value\": 1, \"float_value\": 1.11, \"string_vale\": \"string1\"}"},
-            {"name": "num_numeric","tableName": "aurora_data_api_node_test","typeDbName": "numeric","nullable": true,"typeDataApi": "stringValue","value": "1.12345"},
-            {"name": "num_float","tableName": "aurora_data_api_node_test","typeDbName": "float8","nullable": true,"typeDataApi": "doubleValue","value": 1.11},
-            {"name": "num_integer","tableName": "aurora_data_api_node_test","typeDbName": "int4","nullable": true,"typeDataApi": "longValue","value": 1},
-            {"name": "ts","tableName": "aurora_data_api_node_test","typeDbName": "timestamptz","nullable": true,"typeDataApi": "stringValue","value": "1976-11-02 08:45:00"},
-            {"name": "field_string_null","tableName": "aurora_data_api_node_test","typeDbName": "text","nullable": true,"typeDataApi": "isNull","value": null},
-            {"name": "field_long_null","tableName": "aurora_data_api_node_test","typeDbName": "int4","nullable": true,"typeDataApi": "isNull","value": null},
-            {"name": "field_doc_null","tableName": "aurora_data_api_node_test","typeDbName": "jsonb","nullable": true,"typeDataApi": "isNull","value": null},
-            {"name": "field_boolean","tableName": "aurora_data_api_node_test","typeDbName": "bool","nullable": true,"typeDataApi": "isNull","value": null},
-            {"name": "tz_notimezone","tableName": "aurora_data_api_node_test","typeDbName": "timestamp","nullable": true,"typeDataApi": "stringValue","value": "2021-03-03 15:51:48.082288"},
-            {"name": "a_date","tableName": "aurora_data_api_node_test","typeDbName": "date","nullable": true,"typeDataApi": "stringValue","value": "1976-11-02"}]]
+        const resultExpected = [{"id":1,"a_name":"first row","doc":{"int_value":1,"float_value":1.11,"string_vale":"string1"},"num_numeric":1.12345,"num_float":1.11,"num_integer":1,"ts":"1976-11-02T11:45:00.000Z","field_string_null":null,"field_long_null":null,"field_doc_null":null,"field_boolean":null,"tz_notimezone":"2021-03-03T18:51:48.082Z","a_date":"1976-11-02"}]
         assert.strictEqual(JSON.stringify(response.items), JSON.stringify(resultExpected))
     })
 })
