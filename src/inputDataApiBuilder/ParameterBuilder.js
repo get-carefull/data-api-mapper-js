@@ -54,7 +54,7 @@ class ParameterBuilder {
                     return
                 }
                 if(Array.isArray(value)){
-                    this.parameters.push(this.buildMap(name, value, 'arrayValue'))
+                    this.parameters.push(this.buildMap(name, JSON.stringify(value), 'stringValue', 'JSON'))
                     return
                 }
                 throw new ParameterBuilderException('Invalid value ' + value)
