@@ -1,1 +1,3 @@
-export * from "../data-api-mapper/src/DataApiClient";
+const {DataApiClient} = require("../data-api-mapper/src/DataApiClient")
+
+module.exports = {DataApiClient}

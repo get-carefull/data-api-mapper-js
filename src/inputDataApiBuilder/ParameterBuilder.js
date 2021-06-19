@@ -42,7 +42,7 @@ class ParameterBuilder {
                     return
                 }
                 if(value instanceof Date) {
-                    this.parameters.push(this.buildMap(name, value, 'stringValue', 'DATE'))
+                    this.parameters.push(this.buildMap(name, value.toISOString().replace(/T/, ' ').replace(/\..+/, ''), 'stringValue', 'TIMESTAMP'))
                     return
                 }
                 if(Buffer.isBuffer(value)){
