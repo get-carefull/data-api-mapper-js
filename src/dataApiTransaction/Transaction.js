@@ -38,7 +38,7 @@ class Transaction {
         try {
             const response = await this.rdsClient.send(executeStatementCommand)
             if(response?.columnMetadata) {
-                return new QueryResponse().parse(response)
+                return new QueryResponse().parse(response).items
             } else {
                 return response?.numberOfRecordsUpdated
             }

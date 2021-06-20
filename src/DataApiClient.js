@@ -28,7 +28,7 @@ class DataApiClient {
                  })
             const response = await this.rdsClient.send(executeCommand)
             if(response?.columnMetadata) {
-                return new QueryResponse().parse(response)
+                return new QueryResponse().parse(response).items
             } else {
                 return response.numberOfRecordsUpdated
             }
@@ -52,14 +52,14 @@ class DataApiClient {
         }
         const sqlPaginated = `${sql} limit ${pageSize} offset ${offset}`
         let response = await this.query(sqlPaginated, parameters)
-        response.rows.forEach((element) => {
+        response.forEach((element) => {
             result.push(element)
         })
-        while(response.rows.length >= pageSize ){
+        while(response.length >= pageSize ){
             offset = offset + pageSize
             const sqlPaginated = `${sql} limit ${pageSize} offset ${offset}`
             const responseNew = await this.query(sqlPaginated, parameters)
-            responseNew.rows.forEach((element) => {
+            responseNew.forEach((element) => {
                 result.push(element)
             })
             response = responseNew

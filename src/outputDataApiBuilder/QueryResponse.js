@@ -1,34 +1,22 @@
 class QueryResponse {
 
     constructor() {
-        this.rows = []
         this.items = []
     }
 
     parse(response) {
         const metadata = response.columnMetadata
         response.records.forEach(record => {
-            const row = []
             const item = {}
             record.forEach((col, index) => {
                 const typeDataApi = metadata[index].typeName
                 const colName = metadata[index].name
-                row.push({
-                    name: colName,
-                    tableName: metadata[index].tableName,
-                    typeDbName: metadata[index].typeName,
-                    nullable: metadata[index].nullable !== 0,
-                    typeDataApi: Object.entries(col)[0][0],
-                    value: col.isNull ? null : Object.entries(col)[0][1]
-                })
-
                 // this can be returned on demand with a flag
                 const attr = {}
                 attr[colName] = col.isNull ? null : parserValueFromType(Object.entries(col)[0][1], typeDataApi)
                 Object.assign(item, attr)
             })
             this.items.push(item)
-            this.rows.push(row)
         })
         return this
     }
