@@ -98,7 +98,7 @@ const params = [{
 const inserts = await dataApiClient.batchInsert(insert, params)
 ```
 
-You can use batchInsert into a transaction too. For example:
+You can use batchInsert inside a transaction too. For example:
 
 
 ```javascript
