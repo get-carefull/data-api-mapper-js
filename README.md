@@ -66,6 +66,83 @@ result = await dataApiClient.query(
 )
 ```
 
+
+## Running a batchInsert ⚙️
+
+If you want, you can do batchInsert. You create a query with an array with the parameters and then you invoke the batchInsert method. The result is the final number of inserts made.
+
+```javascript
+
+const insert = "INSERT INTO aurora_data_api_node_test (id, a_name, doc, num_numeric, num_float, num_integer, ts, tz_notimezone, a_date) VALUES (:id, :a_name, '{\"string_vale\": \"string1\", \"int_value\": 1, \"float_value\": 1.11}',:num_numeric, 1.11, 1, '1976-11-02 08:45:00 UTC', '2021-03-03 15:51:48.082288', '1976-11-02');"
+const params = [{
+    id: 9,
+    a_name: 'a',
+    num_numeric: 1.123
+},
+{
+    id: 10,
+    a_name: 'b',
+    num_numeric: 2.123
+},
+{
+    id: 11,
+    a_name: 'c',
+    num_numeric: 3.123
+},
+{
+    id: 12,
+    a_name: 'd',
+    num_numeric: 4.432
+}
+]
+const inserts = await dataApiClient.batchInsert(insert, params)
+```
+
+You can use batchInsert into a transaction too. For example:
+
+
+```javascript
+
+const transaction = await dataApiClient.beginTransaction()
+            const insert = "INSERT INTO aurora_data_api_node_test (id, a_name, doc, num_numeric, num_float, num_integer, ts, tz_notimezone, a_date) VALUES (:id, :a_name, '{\"string_vale\": \"string1\", \"int_value\": 1, \"float_value\": 1.11}',:num_numeric, 1.11, 1, '1976-11-02 08:45:00 UTC', '2021-03-03 15:51:48.082288', '1976-11-02');"
+const params = [{
+    id: 14,
+    a_name: 'a',
+    num_numeric: 1.123
+},
+{
+    id: 15,
+    a_name: 'b',
+    num_numeric: 2.123
+},
+{
+    id: 16,
+    a_name: 'c',
+    num_numeric: 3.123
+},
+{
+    id: 17,
+    a_name: 'd',
+    num_numeric: 4.312
+}
+]
+const inserts = await transaction.batchInsert(insert, params)
+assert.strictEqual(inserts, 4)
+await transaction.rollbackTransaction()
+const response = await dataApiClient.query('SELECT * FROM aurora_data_api_node_test where id=:id', {id: 17})
+assert.strictEqual(JSON.stringify(response), JSON.stringify([]))
+```
+
+## Running a query with pagination ⚙️
+
+If you want, you can run a pagination query. You only need to use the queryPaginated method. This method receives the sql, the parameters and the pageSize. If you pass a pageSize with the value 50, the query only returns the first 50 elements. The default value for the pageSize is 100. An example of execution:
+
+```javascript
+ await dataApiClient.query(thirdInsert)
+//Get the row insert with te transaction and should bring me data
+const response = await dataApiClient.queryPaginated('SELECT * FROM aurora_data_api_node_test', [],50)
+```
+
 ## Transactions
 
 You can initialize a transaction with this method:
