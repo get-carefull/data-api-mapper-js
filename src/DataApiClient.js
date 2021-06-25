@@ -2,7 +2,7 @@ const {QueryResponse} = require("./outputDataApiBuilder/QueryResponse")
 const {DataApiClientException} = require("./exceptions/DataApiClientException")
 const {Transaction} = require("./dataApiTransaction/Transaction")
 const {ParameterBuilder} = require("./inputDataApiBuilder/ParameterBuilder")
-const { RDSDataClient, ExecuteStatementCommand } = require('@aws-sdk/client-rds-data')
+const { RDSDataClient, ExecuteStatementCommand, BatchExecuteStatementCommand } = require('@aws-sdk/client-rds-data')
 
 
 class DataApiClient {
@@ -36,7 +36,29 @@ class DataApiClient {
             console.error(e)
             throw new DataApiClientException('An error occurred while invoking sql', e)
         }
+    }
 
+    async batchInsert(sql, parameters){
+        const paramsDataApi = []
+        parameters.forEach((element) => {
+            const params = new ParameterBuilder().fromQuery(element)
+            paramsDataApi.push(params)
+        })
+        try{
+            const executeCommand = new BatchExecuteStatementCommand({
+                secretArn: this.secretArn,
+                database: this.databaseName,
+                resourceArn: this.resourceArn,
+                sql: sql,
+                includeResultMetadata: true,
+                parameterSets: paramsDataApi,
+            })
+            const response = await this.rdsClient.send(executeCommand)
+            return response?.updateResults?.length
+        }catch (e) {
+            console.error(e)
+            throw new DataApiClientException('An error occurred while invoking sql', e)
+        }
     }
 
     async beginTransaction() {
