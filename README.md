@@ -174,7 +174,6 @@ await transaction.rollbackTransaction() // or await transaction.commitTransactio
 If you want, you can run a pagination query. You only need to use the queryPaginated method. This method receives the sql, the parameters and the pageSize. If you pass a pageSize with the value 50, the query only returns the first 50 elements. The default value for the pageSize is 100. An example of execution:
 
 ```javascript
- await dataApiClient.query(thirdInsert)
 const response = await dataApiClient.queryPaginated('SELECT * FROM aurora_data_api_node_test', [],50)
 ```
 
