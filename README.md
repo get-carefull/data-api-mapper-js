@@ -127,10 +127,7 @@ const params = [{
 }
 ]
 const inserts = await transaction.batchInsert(insert, params)
-assert.strictEqual(inserts, 4)
-await transaction.rollbackTransaction()
-const response = await dataApiClient.query('SELECT * FROM aurora_data_api_node_test where id=:id', {id: 17})
-assert.strictEqual(JSON.stringify(response), JSON.stringify([]))
+await transaction.rollbackTransaction() // or await transaction.commitTransaction()
 ```
 
 ## Running a query with pagination ⚙️
