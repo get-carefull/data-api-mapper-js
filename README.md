@@ -69,7 +69,7 @@ result = await dataApiClient.query(
 
 ## Running a batchInsert ⚙️
 
-If you want, you can do batchInsert. You create a query with an array with the parameters and then you invoke the batchInsert method. The result is the final number of inserts made.
+If you want, you can run batchInsert. You create a query with an array with the parameters and then you invoke the batchInsert method. The result is the final number of inserts made.
 
 ```javascript
 
