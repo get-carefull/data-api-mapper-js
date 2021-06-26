@@ -179,6 +179,18 @@ If you want, you can run a pagination query. You only need to use the queryPagin
 const response = await dataApiClient.queryPaginated('SELECT * FROM aurora_data_api_node_test', [],50)
 ```
 
+## Test ⚙️
+
+For runs the test, you only need to configure a .env.json with your values.
+
+```javascript
+DB_SECRET_ARN=<SECRET_ARN>
+DB_RESOURCE_ARN=<RESOURCE_ARN>
+DB_DATABASE=<DATABASE_NAME>
+REGION=<REGION>
+```
+
+
 # Authors ✒️
 
   * Sebastian Sanio
