@@ -38,7 +38,7 @@ class DataApiClient {
         }
     }
 
-    async batchInsert(sql, parameters){
+    async batchQuery(sql, parameters){
         const paramsDataApi = []
         parameters.forEach((element) => {
             const params = new ParameterBuilder().fromQuery(element)

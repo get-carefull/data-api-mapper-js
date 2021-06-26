@@ -132,8 +132,33 @@ describe('DataApiClientTest', () => {
                 num_numeric: 4.432
             }
             ]
-            const inserts = await dataApiClient.batchInsert(insert, params)
+            const inserts = await dataApiClient.batchQuery(insert, params)
             assert.strictEqual(inserts, 4)
+        }).timeout(60000)
+    })
+
+    describe('DataApiClientBatchUpdate', function () {
+
+        it('Batch update OK',   async () => {
+            //Insert new row
+            const update = "UPDATE aurora_data_api_node_test SET A_NAME = :a_name WHERE ID=:id;"
+            const params = [{
+                id: 1,
+                a_name: 'a',
+                num_numeric: 1.123
+            },
+                {
+                    id: 2,
+                    a_name: 'b',
+                    num_numeric: 2.123
+                }
+            ]
+            const inserts = await dataApiClient.batchQuery(update, params)
+            assert.strictEqual(inserts, 2)
+            const responseId1 = await dataApiClient.query('SELECT * FROM aurora_data_api_node_test where id=:id', {id: 1})
+            const responseId2 = await dataApiClient.query('SELECT * FROM aurora_data_api_node_test where id=:id', {id: 2})
+            assert.strictEqual(responseId1[0].a_name, 'a')
+            assert.strictEqual(responseId2[0].a_name, 'b')
         }).timeout(60000)
     })
 
@@ -164,7 +189,7 @@ describe('DataApiClientTest', () => {
                     num_numeric: 4.312
                 }
             ]
-            const inserts = await transaction.batchInsert(insert, params)
+            const inserts = await transaction.batchQuery(insert, params)
             assert.strictEqual(inserts, 4)
             await transaction.rollbackTransaction()
             const response = await dataApiClient.query('SELECT * FROM aurora_data_api_node_test where id=:id', {id: 17})

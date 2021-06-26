@@ -52,7 +52,7 @@ class Transaction {
 
     }
 
-    async batchInsert(sql, parameters){
+    async batchQuery(sql, parameters){
         await generateTransaction.call(this)
         const paramsDataApi = []
         parameters.forEach((element) => {
