@@ -15,7 +15,7 @@ const select = await data.executeStatement({
   database: <DATABASE>,
   sql: 'SELECT * FROM myTable WHERE number=:number and name=:name',
   parameters: [
-    { name: 'name', value: { stringValue: 'Cousin Oliver' } },
+    { name: 'name', value: { stringValue: 'Roberto Perez' } },
     { number: 'age', value: { longValue: 10 } },
   ]
 ).promise()
