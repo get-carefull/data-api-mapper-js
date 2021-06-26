@@ -2,7 +2,7 @@
 
 The Data API Mapper is a lightweight wrapper for Amazon Aurora Serverless Data API.
 
-This library use: RDS Data Client - AWS SDK for JavaScript v3
+This library uses: RDS Data Client - AWS SDK for JavaScript v3
 
 ## How to use this module
 
@@ -108,9 +108,9 @@ await transaction.rollbackTransaction() // or await transaction.commitTransactio
 const responseThirdInsertDoesntExists = await dataApiClient.query('SELECT * FROM aurora_data_api_node_test where id=:id', {id: 3})
 ```
 
-## Running a batchInsert ⚙️
+## Running a batchQueries ⚙️
 
-If you want, you can run batchInsert. You create a query with an array with the parameters and then you invoke the batchInsert method. The result is the final number of inserts made.
+If you want, you can run batchQuery. You create a query with an array with the parameters and then you invoke the batchQuery method. The result is the final number of modified records.
 
 ```javascript
 
@@ -138,8 +138,26 @@ const params = [{
 ]
 const inserts = await dataApiClient.batchInsert(insert, params)
 ```
+or with an update...
 
-You can use batchInsert inside a transaction too. For example:
+```javascript
+
+const update = "UPDATE aurora_data_api_node_test SET A_NAME = :a_name WHERE ID=:id;"
+const params = [{
+ id: 1,
+ a_name: 'a',
+ num_numeric: 1.123
+},
+{
+  id: 2,
+  a_name: 'b',
+  num_numeric: 2.123
+}
+]
+const inserts = await dataApiClient.batchQuery(update, params)
+```
+
+You can use batchQuery inside a transaction too. For example:
 
 
 ```javascript
@@ -167,8 +185,8 @@ const params = [{
     num_numeric: 4.312
 }
 ]
-const inserts = await transaction.batchInsert(insert, params)
-await transaction.rollbackTransaction() // or await transaction.commitTransaction()
+const inserts = await transaction.batchInsert(insert, params) // or await transaction.batchQuery(update, params)
+await transaction.commitTransaction() // or await transaction.rollbackTransaction()
 ```
 
 ## Running a query with pagination ⚙️
