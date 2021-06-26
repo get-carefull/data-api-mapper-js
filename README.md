@@ -1,6 +1,7 @@
 # Data API Mapper
 
 The Data API Mapper is a lightweight wrapper for Amazon Aurora Serverless Data API.
+
 This library use: RDS Data Client - AWS SDK for JavaScript v3
 
 ## How to use this module
