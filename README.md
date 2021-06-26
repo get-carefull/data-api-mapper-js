@@ -4,6 +4,30 @@ The Data API Mapper is a lightweight wrapper for Amazon Aurora Serverless Data A
 
 This library uses: RDS Data Client - AWS SDK for JavaScript v3
 
+## Motivation
+
+DataApi requires a special parsing of the fields sent to it. For example:
+
+```javascript
+const select = await data.executeStatement({
+  secretArn: <SECRET_ARN>,
+  resourceArn: <SECRET_RESOURCE>,
+  database: <DATABASE>,
+  sql: 'SELECT * FROM myTable WHERE number=:number and name=:name',
+  parameters: [
+    { name: 'name', value: { stringValue: 'Cousin Oliver' } },
+    { number: 'age', value: { longValue: 10 } },
+  ]
+).promise()
+```
+Specifying all the mapping can be quite tedious and then the answer also comes with an unfriendly format and with its own data type of dataApi. For example:
+
+```json
+[[{"longValue":1},{"stringValue":"first row"},{"stringValue":"{\"int_value\": 1, \"float_value\": 1.11, \"string_vale\": \"string1\"}"},{"stringValue":"1.12345"},{"doubleValue":1.11},{"longValue":1},{"stringValue":"1976-11-02 08:45:00"},{"isNull":true},{"isNull":true},{"isNull":true},{"isNull":true},{"stringValue":"2021-03-03 15:51:48.082288"},{"stringValue":"1976-11-02"}]]
+```
+
+So this library is in charge of doing all this mapping work, handling transactions, etc... for you.
+
 ## How to use this module
 
 ```javascript
