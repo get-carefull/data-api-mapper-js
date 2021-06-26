@@ -66,7 +66,7 @@ class DataApiClient {
     }
 
     //TODO Check the order about the query
-    async query_paginated(sql, parameters, pageSize){
+    async queryPaginated(sql, parameters, pageSize){
         let offset = 0
         const result = []
         if(!pageSize){
