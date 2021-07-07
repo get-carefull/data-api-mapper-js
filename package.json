@@ -1,14 +1,14 @@
 {
-  "name": "@lifs/data-api-mapper",
+  "name": "@carefull/data-api-mapper",
   "version": "1.0.6",
   "description": "",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reseauconstruction/data-api-mapper.git"
+    "url": "git+https://github.com/get-carefull/data-api-mapper-js"
   },
   "license": "MIT",
-  "homepage": "https://github.com/reseauconstruction/data-api-mapper#readme",
+  "homepage": "https://github.com/get-carefull/data-api-mapper-js#readme",
   "dependencies": {
     "@aws-sdk/client-rds-data": "^3.18.0",
     "dotenv": "^8.2.0",

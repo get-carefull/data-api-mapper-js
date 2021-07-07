@@ -234,11 +234,7 @@ REGION=<REGION>
 
 
 # Authors ✒️
-
-  * Sebastian Sanio
-  * Flavio Oliveri
-  * Leandro Salomon
-  * Ignacio Guido Varela
+* Carefull Engineering Team
 
 # Expressions of Gratitude 🎁
 
