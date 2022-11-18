@@ -32,7 +32,7 @@ class ParameterBuilder {
                     this.parameters.push(this.buildMap(name, value, 'doubleValue'))
                     return
                 }
-                throw new ParameterBuilderException('Invalid value ' + value)
+                throw new ParameterBuilderException(`Invalid value "${value}" for name "${name}"`)
             case 'boolean':
                 this.parameters.push(this.buildMap(name, value, 'booleanValue'))
                 break
@@ -57,9 +57,9 @@ class ParameterBuilder {
                     this.parameters.push(this.buildMap(name, JSON.stringify(value), 'stringValue', 'JSON'))
                     return
                 }
-                throw new ParameterBuilderException('Invalid value ' + value)
+                throw new ParameterBuilderException(`Invalid value "${value}" for name "${name}"`)
             default:
-                throw new ParameterBuilderException('Invalid value ' + value)
+                throw new ParameterBuilderException(`Invalid value "${value}" for name "${name}"`)
         }
     }
 
@@ -69,10 +69,6 @@ class ParameterBuilder {
                 this.add(key,value)
             }
         }
-        return this.parameters
-    }
-
-    build() {
         return this.parameters
     }
 

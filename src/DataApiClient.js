@@ -1,5 +1,4 @@
 const {QueryResponse} = require("./outputDataApiBuilder/QueryResponse")
-const {DataApiClientException} = require("./exceptions/DataApiClientException")
 const {Transaction} = require("./dataApiTransaction/Transaction")
 const {ParameterBuilder} = require("./inputDataApiBuilder/ParameterBuilder")
 const { RDSDataClient, ExecuteStatementCommand, BatchExecuteStatementCommand } = require('@aws-sdk/client-rds-data')
@@ -17,25 +16,22 @@ class DataApiClient {
 
     async query(sql, parameters){
         const params = new ParameterBuilder().fromQuery(parameters)
-        try{
-            const executeCommand = new ExecuteStatementCommand({
-                    secretArn: this.secretArn,
-                    database: this.databaseName,
-                    resourceArn: this.resourceArn,
-                    sql: sql,
-                    includeResultMetadata: true,
-                    parameters: params,
-                 })
-            const response = await this.rdsClient.send(executeCommand)
-            if(response?.columnMetadata) {
-                return new QueryResponse().parse(response).items
-            } else {
-                return response.numberOfRecordsUpdated
-            }
-        }catch (e) {
-            console.error(e)
-            throw new DataApiClientException('An error occurred while invoking sql', e)
+
+        const executeCommand = new ExecuteStatementCommand({
+                secretArn: this.secretArn,
+                database: this.databaseName,
+                resourceArn: this.resourceArn,
+                sql: sql,
+                includeResultMetadata: true,
+                parameters: params,
+             })
+        const response = await this.rdsClient.send(executeCommand)
+        if(response?.columnMetadata) {
+            return new QueryResponse().parse(response).items
+        } else {
+            return response.numberOfRecordsUpdated
         }
+
     }
 
     async batchQuery(sql, parameters){
@@ -44,28 +40,24 @@ class DataApiClient {
             const params = new ParameterBuilder().fromQuery(element)
             paramsDataApi.push(params)
         })
-        try{
-            const executeCommand = new BatchExecuteStatementCommand({
-                secretArn: this.secretArn,
-                database: this.databaseName,
-                resourceArn: this.resourceArn,
-                sql: sql,
-                includeResultMetadata: true,
-                parameterSets: paramsDataApi,
-            })
-            const response = await this.rdsClient.send(executeCommand)
-            return response?.updateResults?.length
-        }catch (e) {
-            console.error(e)
-            throw new DataApiClientException('An error occurred while invoking sql', e)
-        }
+
+        const executeCommand = new BatchExecuteStatementCommand({
+            secretArn: this.secretArn,
+            database: this.databaseName,
+            resourceArn: this.resourceArn,
+            sql: sql,
+            includeResultMetadata: true,
+            parameterSets: paramsDataApi,
+        })
+        const response = await this.rdsClient.send(executeCommand)
+        return response?.updateResults?.length
+
     }
 
     async beginTransaction() {
         return new Transaction(this.secretArn, this.resourceArn, this.databaseName, this.rdsClient, this.mapper)
     }
 
-    //TODO Check the order about the query
     async queryPaginated(sql, parameters, pageSize){
         let offset = 0
         const result = []
